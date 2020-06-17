@@ -2,21 +2,8 @@
   include("./conf/conf.php");
 
   $query = "SELECT * FROM `secure_login`";
-      
   $result = mysqli_query($link, $query);
-      
-  if($result){
-    while($row = mysqli_fetch_array($result)){
-      $ids = $row["id"];
-      $usuarios = $row["username"];
-      $dados = $row["dados"];
-      $comandos = $row["comando"];
-    }
-  }
-  $caminho = "./dados/".$usuarios.".html";
-  $fp = fopen($caminho, "w");
-  fwrite($fp, $dados."<a href='../'><b>Voltar</b></a>");
-  fclose($fp);
+
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +14,7 @@
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="./js/script.js"></script>
+  <meta http-equiv="refresh" content="5">
   <meta charset="utf-8">
   <style type="text/css">
     body{
@@ -97,22 +85,32 @@
               </thead>
               <tbody>
                 <?php
-                echo '
-                <tr>
-                  <th><input type="hidden" name="user" value="'.$usuarios.'"></th>
-                  <th><input type="hidden" name="token" value="'.md5($usuarios).'"></th>
-                  <th scope="row">'.$ids.'</th>
-                  <td>'.$usuarios.'</td>
-                  <td>'.$comandos.'</td>
-                  <td>
-
-                      <a class="btn btn-sm btn-primary" href="#" onclick="exec()"><i class="far fa-Executar"></i> Executar</a>
-                      <a class="btn btn-sm btn-danger" href="#" onclick="drop()"><i class="fas fa-trash-alt"></i> delete</a>    
-                  </td>
-                  <td><a class="btn btn-sm btn-info" href="'.$caminho.'"><i class="fas fa-info-circle"></i> Details</a> </td>
-                  <td><input type="text" name="command" class="inputs"></td>
-                </tr>
-                ';
+                    if($result){
+                      while($row = mysqli_fetch_array($result)){
+                        $ids = $row["id"];
+                        $usuarios = $row["username"];
+                        $dados = $row["dados"];
+                        $comandos = $row["comando"];
+                        $caminho = "./dados/".$usuarios.".html";
+                        $fp = fopen($caminho, "w");
+                        echo '
+                            <tr>
+                              <input type="hidden" name="user" value="'.$usuarios.'">
+                              <input type="hidden" name="token" value="'.md5($usuarios).'">
+                              <th scope="row">'.$ids.'</th>
+                              <td>'.$usuarios.'</td>
+                              <td>'.$comandos.'</td>
+                              <td>
+                                  <a class="btn btn-sm btn-primary" href="#" onclick="exec()"><i class="far fa-Executar"></i> Executar</a>
+                                  <a class="btn btn-sm btn-danger" href="#" onclick="exec()"><i class="fas fa-trash-alt"></i> delete</a>
+                              </td>
+                              <td><a class="btn btn-sm btn-info" href="'.$caminho.'"><i class="fas fa-info-circle"></i> Details</a> </td>
+                              <td><input type="text" name="command" class="inputs"></td>
+                            </tr>';
+                        fwrite($fp, $dados."<a href='../'><b>Voltar</b></a>");
+                        fclose($fp);
+                      }
+                    }
                 ?>
               </tbody>
             </table>

@@ -17,12 +17,12 @@
 			
 			$query = mysqli_query($link, "SELECT * FROM `secure_login` WHERE username='$user'");
 			if (mysqli_num_rows($query)){
-				
 				mysqli_query($link, "UPDATE `secure_login` SET dados='$dados', comando='$command' WHERE username='$user';");
-				//echo "Sucesso: Atualizado corretamente!";
+				echo "Sucesso: Atualizado corretamente!";
 				
 			}else{
-				mysqli_query($link, "INSERT INTO `secure_login` (id, username, comando, dados) VALUES('1', '$user', '', '$dados')");
+				mysqli_query($link, "INSERT INTO `secure_login` (id, username, comando, dados) VALUES('', '$user', '', '$dados')");
+				echo "Sucesso: Inserido corretamente!";
 			}
 		}else{
 			echo "{'Status': 101, 'Msg':'token invalido!'}";
